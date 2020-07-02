@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue Todo</title>
+    <style>
+        .empty {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="todo-app">
+    <input type="text"
+           v-bind:class='{empty: emptyChecked}'
+           placeholder="add todo"
+           v-model="newTodoTitle"
+           @keyup.enter="addTodo"
+           />
+    <span v-if="emptyChecked" style="color: red">请输入内容！</span>
+</div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+<script>
+    let id = 0; // 用于 id 生成
+    var app = new Vue({
+        el: '#todo-app',
+        data: function () {
+            return {
+                todos: [],
+                newTodoTitle: '',
+                checkEmpty: false // 增加一个检查空值标志
+            }
+        },
+        methods: {
+            addTodo: function () {
+                if (this.newTodoTitle === '') {
+                    this.checkEmpty = true;
+                    return
+                }
+                this.$http.get('http://127.0.0.1:8000/api/add_todo?title=' + this.newTodoTitle)
+                    .then((response) => {
+                        var res = JSON.parse(response.bodyText)
+                        if (res.error_num === 0) {
+                            this.showBooks()
+                        } else {
+                            this.$message.error('add todo fail')
+                            console.log(res['msg'])
+                        }
+                // this.todos.push({id: id++, title: this.newTodoTitle});
+                this.newTodoTitle = '';
+                this.checkEmpty = false;
+            }
+        },
+        computed: {
+            emptyChecked: function () {
+                return this.newTodoTitle.length === 0 && this.checkEmpty
+            }
+        }
+    })
+</script>
+</html>
