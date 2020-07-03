@@ -1,9 +1,8 @@
-from django.shortcuts import render
+import json
 from .models import Todo
 from django.views.decorators.http import require_http_methods
-from django.core import serializers
+from .serializers.todo_serializer import TodoSerializer
 from django.http import JsonResponse
-import json
 
 # Create your views here.
 @require_http_methods(['GET'])
@@ -23,9 +22,16 @@ def add_todo(request):
 @require_http_methods(['GET'])
 def show_todos(request):
     response = {}
+    data_list = []
     try:
-        todos = Todo.objects.filter()
-        response['list'] = json.loads(serializers.serialize("json", todos))
+        todos = Todo.objects.all()
+        for ele in todos:
+            print('ele is ', ele)
+            data = TodoSerializer(ele).data
+            print('xxx data is ', data)
+            print('data.data is ', data)
+            data_list.append(data)
+        response['list'] = data_list
         response['msg'] = "success"
         response['error_num'] = 0
     except Exception as e:
