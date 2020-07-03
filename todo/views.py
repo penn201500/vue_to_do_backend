@@ -10,7 +10,7 @@ import json
 def add_todo(request):
     response = {}
     try:
-        todo = Todo(title=request.GET.get('title'))
+        todo = Todo(name=request.GET.get('name'), priority=request.GET.get('priority'))
         todo.save()
         response['msg'] = 'success'
         response['error_num'] = 0
