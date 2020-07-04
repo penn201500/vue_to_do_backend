@@ -3,8 +3,10 @@ from .models import Todo
 from django.views.decorators.http import require_http_methods
 from .serializers.todo_serializer import TodoSerializer
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
+@csrf_exempt
 @require_http_methods(['POST'])
 def add_todo(request):
     response = {}
