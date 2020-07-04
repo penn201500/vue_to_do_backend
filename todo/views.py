@@ -5,11 +5,12 @@ from .serializers.todo_serializer import TodoSerializer
 from django.http import JsonResponse
 
 # Create your views here.
-@require_http_methods(['GET'])
+@require_http_methods(['POST'])
 def add_todo(request):
     response = {}
     try:
-        todo = Todo(name=request.GET.get('name'), priority=request.GET.get('priority'))
+        data = json.loads(request.body)
+        todo = Todo(name=data.get('name'), priority=data.get('priority'))
         todo.save()
         response['msg'] = 'success'
         response['error_num'] = 0
@@ -26,10 +27,7 @@ def show_todos(request):
     try:
         todos = Todo.objects.all()
         for ele in todos:
-            print('ele is ', ele)
             data = TodoSerializer(ele).data
-            print('xxx data is ', data)
-            print('data.data is ', data)
             data_list.append(data)
         response['list'] = data_list
         response['msg'] = "success"
