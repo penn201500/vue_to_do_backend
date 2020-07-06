@@ -11,7 +11,7 @@ class TodoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Todo
-        fields = '__all__'
+        exclude = ('is_del', 'comment')
 
     def to_representation(self, instance):
         ret = super(TodoSerializer, self).to_representation(instance)

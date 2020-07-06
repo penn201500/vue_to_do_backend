@@ -27,12 +27,28 @@ def show_todos(request):
     response = {}
     data_list = []
     try:
-        todos = Todo.objects.all()
+        todos = Todo.objects.filter(is_del=False)
         for ele in todos:
             data = TodoSerializer(ele).data
             data_list.append(data)
         response['list'] = data_list
         response['msg'] = "success"
+        response['error_num'] = 0
+    except Exception as e:
+        response['msg'] = str(e)
+        response['error_num'] = 1
+    return JsonResponse(response)
+
+@csrf_exempt
+@require_http_methods(['DELETE'])
+def del_todos(request):
+    response = {}
+    ids = json.loads(request.body).get('ids')
+    print(ids)
+    todos = Todo.objects.filter(id__in=ids)
+    try:
+        todos.update(is_del=True)
+        response['msg'] = "delete success"
         response['error_num'] = 0
     except Exception as e:
         response['msg'] = str(e)
