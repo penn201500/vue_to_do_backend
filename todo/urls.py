@@ -20,4 +20,5 @@ urlpatterns = [
     path('add_todo/', views.add_todo),
     path('show_todos/', views.show_todos),
     path('del_todos/', views.del_todos),
+    path('search/', views.search),
 ]
