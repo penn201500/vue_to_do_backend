@@ -17,5 +17,6 @@ class TodoSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super(TodoSerializer, self).to_representation(instance)
         ret['add_time'] = instance.add_time.strftime('%Y-%m-%d %H:%M:%S')
+        ret['todo_type'] = instance.get_todo_type_display()
         return ret
 
