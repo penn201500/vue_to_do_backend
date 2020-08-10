@@ -12,7 +12,7 @@ def add_todo(request):
     response = {}
     try:
         data = json.loads(request.body)
-        todo = Todo(name=data.get('name'), priority=data.get('priority'))
+        todo = Todo(name=data.get('name'), priority=data.get('priority'), todo_type=data.get('type'))
         todo.save()
         response['msg'] = 'success'
         response['error_num'] = 0

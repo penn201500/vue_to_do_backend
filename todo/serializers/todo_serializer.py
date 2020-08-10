@@ -7,6 +7,7 @@ from django.utils.dateparse import parse_datetime
 class TodoSerializer(serializers.ModelSerializer):
     name = serializers.CharField()
     priority = serializers.IntegerField()
+    todo_type = serializers.IntegerField()
     add_time = serializers.DateTimeField()
 
     class Meta:
